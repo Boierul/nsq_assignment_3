@@ -4,52 +4,54 @@ type CharacterType {
 }
 
 type Author {
-    id: Int!,
-    FullName: String!,
+    id: Int!
+    FullName: String!
     books: [Book!]! @relationship(type: "WRITTEN_BY", direction: IN)
 }
 
 type Genre {
-    id: Int!,
-    GenreName: String!,
+    id: Int!
+    GenreName: String!
 }
 
 type Publisher {
-    id: Int!,
-    PublisherName: String!,
-    books: [Book!]! @relationship(type: "PUBLISHED_BY", direction: IN)
+    id: Int!
+    PublisherName: String!
+    books: [Book!]! @relationship(type: "PUBLISHED_BY", direction: OUT)
 }
 
 type Category {
-    id: Int!,
-    CategoryName: String!,
+    id: Int!
+    CategoryName: String!
 }
 
 type Customer {
-    id: Int!,
-    CustomerName: String!,
-    Email: String!,
-    Phone: Int!,
-    orders: [Order!]! @relationship(type: "ORDERS", direction: IN)
+    id: Int!
+    CustomerName: String!
+    Email: String!
+    Phone: Int!
+    orders: [Order!]! @relationship(type: "ORDERS", direction: OUT)
 }
 
 type Book {
-    id: Int!,
-    BookName: String!,
-    ISBN: String!,
-    PageCount: String!,
-    Price: Int!,
-    PublishedDate: Date!,
+    id: Int!
+    BookName: String!
+    ISBN: String!
+    PageCount: String!
+    Price: Int!
+    PublishedDate: Date!
     Quantity: String!
     authors: [Author!]! @relationship(type: "WRITTEN_BY", direction: OUT)
-    publisher: [Publisher!]! @relationship(type: "PUBLISHED_BY", direction: IN)
+    publisher: [Publisher!]! @relationship(type: "PUBLISHED_BY", direction: OUT)
+    orders: [Order!]! @relationship(type: "CONTAINS", direction: IN)
+    genre: [Genre!]! @relationship(type: "HAS_GENRE", direction: IN)
 }
 
 type Order {
-  id: Int!,
-  OrderNumber: String!
-  OrderDate: Date!
-  DeliveryAddress: String!
-  books: [Book!]! @cypher(statement: "MATCH (this)-[:CONTAINS]->(b:Book) RETURN b")
-  customer: Customer @relationship(type: "ORDERS", direction: OUT)
+      id: Int!
+      OrderNumber: String!
+      OrderDate: Date!
+      DeliveryAddress: String!
+      books: [Book!]! @relationship(type: "CONTAINS", direction: OUT)
+      customer: [Customer!]! @relationship(type: "ORDERS", direction: IN)
 }
