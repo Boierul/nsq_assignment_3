@@ -21,9 +21,12 @@ type Publisher {
 }
 
 type Category {
-    id: Int!
-    CategoryName: String!
+  id: Int!
+  CategoryName: String!
+  subcategories: [Category!]! @relationship(type: "SUBCATEGORY_OF", direction: OUT)
+  books: [Book!]! @relationship(type: "HAS_CATEGORY", direction: IN)
 }
+
 
 type Customer {
     id: Int!
@@ -45,6 +48,7 @@ type Book {
     publisher: [Publisher!]! @relationship(type: "PUBLISHED_BY", direction: OUT)
     orders: [Order!]! @relationship(type: "CONTAINS", direction: IN)
     genre: [Genre!]! @relationship(type: "HAS_GENRE", direction: IN)
+    categories: [Category!]! @relationship(type: "HAS_CATEGORY", direction: OUT)
 }
 
 type Order {
@@ -54,4 +58,34 @@ type Order {
       DeliveryAddress: String!
       books: [Book!]! @relationship(type: "CONTAINS", direction: OUT)
       customer: [Customer!]! @relationship(type: "ORDERS", direction: IN)
+}
+
+type Query {
+  siblings(CategoryName: String!): [Category!]!
+    @cypher(statement: "MATCH (c:Category {CategoryName: $CategoryName})<-[:HAS_CATEGORY]-(b:Book) RETURN b")
+}
+
+
+query retrieveBooksByCategory($categoryName: String!) {
+  books(
+    where: {
+      OR: [
+        { categories_SOME: { CategoryName_CONTAINS: $categoryName } },
+        {
+          categories_SOME: {
+            OR: [
+              { CategoryName_CONTAINS: $categoryName },
+              {
+                subcategories_SOME: {
+                  CategoryName_CONTAINS: $categoryName
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ) {
+    BookName
+  }
 }
