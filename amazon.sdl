@@ -1,11 +1,12 @@
 type CharacterType {
-    id: ID!,
+    id: Int!,
     CharacterTypeName: String!,
 }
 
 type Author {
-    id: ID!,
+    id: Int!,
     FullName: String!,
+    books: [Book!]! @relationship(type: "WRITTEN_BY", direction: OUT)
 }
 
 type Genre {
@@ -38,6 +39,7 @@ type Book {
     Price: Int!,
     PublishedDate: Date!,
     Quantity: String!
+    authors: [Author!]! @relationship(type: "WRITTEN_BY", direction: IN)
 }
 
 type Order {
