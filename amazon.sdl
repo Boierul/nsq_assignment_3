@@ -17,6 +17,7 @@ type Genre {
 type Publisher {
     id: Int!,
     PublisherName: String!,
+    books: [Book!]! @relationship(type: "PUBLISHED_BY", direction: IN)
 }
 
 type Category {
@@ -29,6 +30,7 @@ type Customer {
     CustomerName: String!,
     Email: String!,
     Phone: Int!,
+    orders: [Order!]! @relationship(type: "ORDERS", direction: IN)
 }
 
 type Book {
@@ -40,6 +42,7 @@ type Book {
     PublishedDate: Date!,
     Quantity: String!
     authors: [Author!]! @relationship(type: "WRITTEN_BY", direction: OUT)
+    publisher: [Publisher!]! @relationship(type: "PUBLISHED_BY", direction: IN)
 }
 
 type Order {
@@ -47,4 +50,6 @@ type Order {
   OrderNumber: String!
   OrderDate: Date!
   DeliveryAddress: String!
+  books: [Book!]! @cypher(statement: "MATCH (this)-[:CONTAINS]->(b:Book) RETURN b")
+  customer: Customer @relationship(type: "ORDERS", direction: OUT)
 }
