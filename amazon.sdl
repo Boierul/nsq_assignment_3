@@ -1,0 +1,31 @@
+type CharacterType {
+    id: Int!,
+    CharacterTypeName: String!,
+}
+
+type Author {
+    id: Int!,
+    FullName: String!,
+}
+
+type Genre {
+    id: Int!,
+    GenreName: String!,
+}
+
+type Publisher {
+    id: Int!,
+    PublisherName: String!,
+}
+
+type Category {
+    id: Int!,
+    CategoryName: String!,
+}
+
+type Customer {
+    id: Int!,
+    CustomerName: String!,
+    Email: String!,
+    Phone: Int!,
+}
