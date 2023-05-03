@@ -1,10 +1,10 @@
 type CharacterType {
-    id: Int!,
+    id: ID!,
     CharacterTypeName: String!,
 }
 
 type Author {
-    id: Int!,
+    id: ID!,
     FullName: String!,
 }
 
@@ -28,4 +28,21 @@ type Customer {
     CustomerName: String!,
     Email: String!,
     Phone: Int!,
+}
+
+type Book {
+    id: Int!,
+    BookName: String!,
+    ISBN: String!,
+    PageCount: String!,
+    Price: Int!,
+    PublishedDate: Date!,
+    Quantity: String!
+}
+
+type Order {
+  id: Int!,
+  OrderNumber: String!
+  OrderDate: Date!
+  DeliveryAddress: String!
 }
