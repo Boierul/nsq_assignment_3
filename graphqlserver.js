@@ -21,7 +21,7 @@ async function startServer(driver) {
 }
 const driver = neo4j.driver(
   "bolt://127.0.0.1:7687",
-  neo4j.auth.basic("neo4j", "password"),
+  neo4j.auth.basic("neo4j", "andronachi"),
   {
     encrypted: "ENCRYPTION_OFF"
   }

@@ -42,6 +42,7 @@ type Book {
     ISBN: String!
     PageCount: String!
     Price: Int!
+    ReducedPrice: Int
     PublishedDate: Date!
     Quantity: String!
     authors: [Author!]! @relationship(type: "WRITTEN_BY", direction: OUT)
@@ -88,4 +89,15 @@ query retrieveBooksByCategory($categoryName: String!) {
   ) {
     BookName
   }
+}
+
+type ApplyAuthorDiscountResponse {
+  books: [Book]
+}
+
+type Mutation {
+  applyAuthorDiscount(
+    FullName: String!
+    discountPercent: Float!
+  ): ApplyAuthorDiscountResponse
 }
